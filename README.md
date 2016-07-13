@@ -92,10 +92,34 @@ Then it's the same API as above. A browser [example](https://scienceai.github.io
 + `nIter`: maximum number of iterations, should be at least 200
 
 + `metric`: distance measure to use for input data, currently implemented measures include
-  + `euclidean`
-  + `manhattan`
-  + `jaccard` (boolean data)
-  + `dice` (boolean data)
+  + `'euclidean'`
+  + `'manhattan'`
+  + `'jaccard'` (boolean data)
+  + `'dice'` (boolean data)
+
+  You can also pass a distance function to `metric`
+  ```js
+  import cwise from 'cwise';
+
+  // Operates on an n-dimensional array using the cwise module
+  let euclidean = cwise({
+    args: ['array', 'array'],
+    pre: function(a, b) {
+      this.sum = 0.0;
+    },
+    body: function(a, b) {
+      var d = a - b;
+      this.sum += d * d;
+    },
+    post: function(a, b) {
+      return Math.sqrt(this.sum);
+    }
+  });
+
+  let model = new TSNE({
+    metric: euclidean
+  });
+  ```
 
 ### Build
 

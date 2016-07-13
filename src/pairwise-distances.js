@@ -110,6 +110,15 @@ export default function(data, metric) {
       }
       break;
     default:
+      if (typeof metric === 'function') {
+        for (let i = 0; i < nSamples; i++) {
+          for (let j = i + 1; j < nSamples; j++) {
+            let d = metric(data.pick(i, null), data.pick(j, null));
+            distance.set(i, j, d);
+            distance.set(j, i, d);
+          }
+        }
+      }
   }
 
   return distance;
